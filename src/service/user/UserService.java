@@ -22,8 +22,8 @@ public class UserService {
 		user_service_DB = userDB;
 	}
 
-	public void create_user(String userID, String userTEL, String userSEX, int userAGE) {
-		update = new Create_User(user_service_DB, userID, userTEL, userSEX, userAGE);
+	public void create_user(String userID, String userPW, String userTEL, String userSEX, int userAGE) {
+		update = new Create_User(user_service_DB, userID, userPW, userTEL, userSEX, userAGE);
 		update.insert();
 	}
 

@@ -8,9 +8,10 @@ import service.user.db.UserDB;
 public class Create_User extends UserService implements Update {
 	User user = new User();
 
-	public Create_User(UserDB userDB, String userID, String userTEL, String userSEX, int userAGE) {
+	public Create_User(UserDB userDB, String userID, String userPW, String userTEL, String userSEX, int userAGE) {
 		super(userDB);
 		user.setUserID(userID);
+		user.setUserPW(userPW);
 		user.setUserTEL(userTEL);
 		user.setUserSEX(userSEX);
 		user.setUserAGE(userAGE);
