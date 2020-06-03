@@ -3,7 +3,6 @@ package service.user;
 public class User {
 	private String userID;
 	private String userPW;
-
 	private String userTEL;
 	private String userSEX;
 	private int userAGE;

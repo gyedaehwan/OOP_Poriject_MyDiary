@@ -1,3 +1,6 @@
+// user의 정보 프로그램이 실행하는 동안 저장 할 객체
+// 저장할 내용 : ID PW TEL SEX AGE
+
 package service.user.db;
 
 import java.util.HashMap;
@@ -6,34 +9,21 @@ import java.util.Map;
 import service.DB;
 import service.user.User;
 
-public class UserDB extends DB {
-	private Map<String, User> userDB;
-	User user;
+public abstract class UserDB extends DB {
+	protected Map<String, User> userDB;
+	protected User user;
 
+	// 생성자 : user의 정보를 담을 HashMap 객체 생성
 	public UserDB() {
 		userDB = new HashMap<String, User>();
 	}
 
-	// user 생성 및 수정한 정보 업데이트
 	@Override
-	public void update(Object obj) {
-		this.user = (User) obj;
-		userDB.put(user.getUserID(), user);
-	}
-
-	// user 정보 삭제
-	@Override
-	public void delete(Object obj) {
-		this.user = (User) obj;
-		userDB.remove(user.getUserID());
-	}
-
-	// user 정보 읽기
-	@Override
+	// userID를 받아서 user 리턴
 	// User -> Object
-	public User read(Object obj) {
-		this.user = (User) obj;
-		return userDB.get(user.getUserID());
+	// Read_User객체에서사용
+	public User get(Object obj) {
+		return userDB.get((String) obj);
 
 	}
 

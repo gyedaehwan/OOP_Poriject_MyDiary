@@ -4,7 +4,7 @@ public abstract class DB {
 
 	protected abstract void update(Object obj);
 
-	protected abstract void delete(Object obj);
+	public abstract void delete(Object obj);
 
-	protected abstract Object read(Object obj);
+	protected abstract Object get(Object obj);
 }

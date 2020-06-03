@@ -1,11 +1,24 @@
 package service.post;
 
+import java.util.Date;
+
 public class Post {
+	// post 제목
 	private String postName;
-	private String postWriter;
-	// private Date 작성시간 불러오기
-	private String postContents;
+	// 작성일시
+	private Date date;
+	// post 번호
 	private int num;
+
+	// GETTER & SETTER
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
 	public int getNum() {
 		return num;
@@ -21,22 +34,6 @@ public class Post {
 
 	public void setPostName(String postName) {
 		this.postName = postName;
-	}
-
-	public String getPostWriter() {
-		return postWriter;
-	}
-
-	public void setPostWriter(String postWriter) {
-		this.postWriter = postWriter;
-	}
-
-	public String getPostContents() {
-		return postContents;
-	}
-
-	public void setPostContents(String postContents) {
-		this.postContents = postContents;
 	}
 
 }

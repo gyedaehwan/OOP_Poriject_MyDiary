@@ -1,44 +1,33 @@
+// userDB와 user.service 의 객체들을 연동시킴
+// UserService로 객체를 만들어서 user 제어
+
 package service.user;
 
-import controller.Delete;
-import controller.Read;
-import controller.Update;
 import service.user.db.UserDB;
-import service.user.service.Create_User;
-import service.user.service.Delete_User;
-import service.user.service.Read_User;
 
-public class UserService {
-	public UserDB user_service_DB = new UserDB();
-	Update update;
-	Delete delete;
-	Read read;
+public class UserService extends UserDB {
 
+	// UserService 생성자 생성 동시에 UserDB생성자 호출됨에 따라
+	// user의 정보를 저장할 userDB도 생성
 	public UserService() {
 
 	}
 
-	public UserService(UserDB userDB) {
-		user_service_DB = userDB;
+	// user 생성 및 수정한 정보 업데이트
+	// 사용할 부분 : 회원가입, 회원정보 수정
+	// user 객체가 들어와서 새로운정보를 받음
+	// UserService -> UserDB -> DB
+	@Override
+	public void update(Object obj) {
+		user = (User) obj;
+		userDB.put(user.getUserID(), user);
 	}
 
-	public void create_user(String userID, String userPW, String userTEL, String userSEX, int userAGE) {
-		update = new Create_User(user_service_DB, userID, userPW, userTEL, userSEX, userAGE);
-		update.insert();
+	// Delete_User 객체에서 오버라이딩 호출
+	// user 정보 삭제
+	@Override
+	public void delete(Object obj) {
+		this.user = (User) obj;
+		userDB.remove(user.getUserID());
 	}
-
-	public void delete_user(String userID) {
-		delete = new Delete_User(user_service_DB, userID);
-		delete.delete();
-	}
-
-	public User read_user(String userID) {
-		read = new Read_User(user_service_DB, userID);
-		return (User) read.read();
-	}
-
-	/**
-	 * test public void print() {
-	 * System.out.println(user_service_DB.getUserDB().get("abc").getUserAGE()); }
-	 **/
 }

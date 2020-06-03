@@ -1,40 +1,42 @@
+// postDB와 post.service의 객체들을 연동
+// PostService 로 객체를 만들어서 post 제어
+
 package service.post;
 
-import controller.Delete;
-import controller.Read;
-import controller.Update;
 import service.post.db.PostDB;
-import service.post.service.Create_Post;
-import service.post.service.Delete_Post;
-import service.post.service.Read_Post;
 
-public class PostService {
-	public PostDB post_service_DB;
-	Update update;
-	Delete delete;
-	Read read;
+public class PostService extends PostDB {
 
-	public PostService(PostDB postDB) {
-		post_service_DB = postDB;
+	public PostService() {
+
 	}
 
-	public void create_post(int num, String postName, String postWriter, String postContents) {
-		update = new Create_Post(post_service_DB, num, postName, postContents, postWriter);
-		update.insert();
+	// Post 정보를 수정할 메서드
+	// Post로 다운캐스팅 해서 받아내서 postDB에 추가 <포스트번호 : 포스트제목>
+	// 사용할 부분 : 게시글 추가, 게시글 수정
+	@Override
+	public void update(Object obj) {
+		this.post = (Post) obj;
+		postDB.put(this.post.getNum(), post);
 	}
 
-	public void delete_post(int num) {
-		delete = new Delete_Post(post_service_DB, num);
-		delete.delete();
+	// post 정보 삭제
+	// Post로 다운캐스티해서 postDB에서 삭제 (게시글 번호를 통해)
+	// 사용할 부분 : 게시글 삭제 ,게시글 수정
+	@Override
+	public void delete(Object obj) {
+		this.post = (Post) obj;
+		postDB.remove(post.getNum());
 	}
 
-	public Post read_post(int num) {
-		read = new Read_Post(post_service_DB, num);
-		return (Post) read.read();
-	}
-
+	// post 게시글 번호 리턴
+	// 사용할 부분 : 게시글 수정 , 삭제
 	public int getNum() {
-		return post_service_DB.getNum();
+		return post.getNum();
+	}
+
+	public void setNum(int num) {
+		post.setNum(num);
 	}
 
 }
