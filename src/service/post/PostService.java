@@ -9,7 +9,7 @@ import service.post.service.Delete_Post;
 import service.post.service.Read_Post;
 
 public class PostService {
-	protected PostDB post_service_DB;
+	public PostDB post_service_DB;
 	Update update;
 	Delete delete;
 	Read read;
@@ -18,18 +18,23 @@ public class PostService {
 		post_service_DB = postDB;
 	}
 
-	public void create_post(String postName, String postWriter, String postContents) {
-		update = new Create_Post(post_service_DB, postName, postContents, postWriter);
+	public void create_post(int num, String postName, String postWriter, String postContents) {
+		update = new Create_Post(post_service_DB, num, postName, postContents, postWriter);
 		update.insert();
 	}
 
-	public void delete_post(String postName) {
-		delete = new Delete_Post(post_service_DB, postName);
+	public void delete_post(int num) {
+		delete = new Delete_Post(post_service_DB, num);
 		delete.delete();
 	}
 
-	public Post read_post(String postName) {
-		read = new Read_Post(post_service_DB, postName);
+	public Post read_post(int num) {
+		read = new Read_Post(post_service_DB, num);
 		return (Post) read.read();
 	}
+
+	public int getNum() {
+		return post_service_DB.getNum();
+	}
+
 }

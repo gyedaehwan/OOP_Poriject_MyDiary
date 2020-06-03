@@ -42,4 +42,7 @@ public class UserDB extends DB {
 		return userDB;
 	}
 
+	public String userID() {
+		return user.getUserID();
+	}
 }

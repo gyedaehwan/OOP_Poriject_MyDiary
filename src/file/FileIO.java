@@ -18,10 +18,13 @@ public abstract class FileIO {
 	}
 
 	protected boolean checkFile() throws IOException {
+		// 파일이 있으면 true 리턴
 		if (file.exists()) {
 			return true;
 
-		} else {
+		}
+		// 없을때는 파일을 생성해주고 false리턴
+		else {
 			FileOutputStream output = new FileOutputStream("./" + compare + ".txt");
 			// output.close();
 			return false;

@@ -22,4 +22,8 @@ public class Service {
 		return userService;
 	}
 
+	public PostService getPostService() {
+		return postService;
+	}
+
 }

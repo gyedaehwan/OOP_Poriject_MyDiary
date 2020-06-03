@@ -83,7 +83,7 @@ public class Login_File extends FileIO {
 		// 개행문자쓰기
 		bufferedWriter.newLine();
 
-		bufferedWriter.close();
+		// bufferedWriter.close();
 	}
 
 }

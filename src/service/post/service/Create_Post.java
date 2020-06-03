@@ -8,8 +8,9 @@ import service.post.db.PostDB;
 public class Create_Post extends PostService implements Update {
 	Post post = new Post();
 
-	public Create_Post(PostDB postDB, String postName, String postContents, String postWriter) {
+	public Create_Post(PostDB postDB, int num, String postName, String postContents, String postWriter) {
 		super(postDB);
+		post.setNum(num);
 		post.setPostContents(postContents);
 		post.setPostName(postName);
 		post.setPostWriter(postWriter);

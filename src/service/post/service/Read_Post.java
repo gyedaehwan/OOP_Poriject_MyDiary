@@ -8,9 +8,9 @@ import service.post.db.PostDB;
 public class Read_Post extends PostService implements Read {
 	Post post = new Post();
 
-	public Read_Post(PostDB postDB, String postName) {
+	public Read_Post(PostDB postDB, int num) {
 		super(postDB);
-		post.setPostName(postName);
+		post.setNum(num);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import service.user.service.Delete_User;
 import service.user.service.Read_User;
 
 public class UserService {
-	protected UserDB user_service_DB = new UserDB();
+	public UserDB user_service_DB = new UserDB();
 	Update update;
 	Delete delete;
 	Read read;

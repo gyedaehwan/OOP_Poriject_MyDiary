@@ -5,6 +5,15 @@ public class Post {
 	private String postWriter;
 	// private Date 작성시간 불러오기
 	private String postContents;
+	private int num;
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
 
 	public String getPostName() {
 		return postName;

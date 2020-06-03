@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import file.Login_File;
+import file.Post_File;
 import service.Service;
+import service.post.PostService;
 import service.user.UserService;
 
 public class Application {
@@ -15,6 +17,7 @@ public class Application {
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		UserService userService = service.getUserService();
 		Login_File file_login = new Login_File(userService);
+		Post_File post_file;
 
 		while (true) {
 
@@ -55,18 +58,41 @@ public class Application {
 				System.out.println("1 과 2 중에 입력하세요.");
 			}
 
+			// 로그인 성공
+			// 게시글 화면
 			while (login) {
+				PostService postService = service.getPostService();
+				String userID = userService.user_service_DB.userID();
+
+				post_file = new Post_File(userID, postService);
+				post_file.print_post();
+
 				// 회원정보 보여주고 지금 까지 쓴 게시글 제목, 쓴 날짜(날짜순) 보여줌
 				System.out.println("(1) 게시글 쓰기");
 				System.out.println("(2) 게시글 수정");
 				System.out.println("(3) 게시글 삭제");
 				System.out.println("(4) 게시글 검색");
 				System.out.println("(5) 회원정보 수정");
+				System.out.print("Input : ");
+				input = bf.readLine();
 
-				System.out.println("============회원정보 로 했다 침 =================");
+				if (input.equals("1")) {
 
-				System.out.println("(1) 수정");
-				System.out.println("(1) 삭제");
+					post_file.write();
+
+				} else if (input.equals("2")) {
+
+				} else if (input.equals("3")) {
+
+				} else if (input.equals("4")) {
+
+				} else if (input.equals("5")) {
+
+				} else
+					System.out.println("1~5중에서 고르시오.");
+				/**
+				 * System.out.println("(1) 수정"); System.out.println("(1) 삭제");
+				 **/
 			}
 		}
 		// test

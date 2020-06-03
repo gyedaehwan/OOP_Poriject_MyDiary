@@ -8,9 +8,9 @@ import service.post.db.PostDB;
 public class Delete_Post extends PostService implements Delete {
 	Post post = new Post();
 
-	public Delete_Post(PostDB postDB, String postName) {
+	public Delete_Post(PostDB postDB, int num) {
 		super(postDB);
-		post.setPostName(postName);
+		post.setNum(num);
 	}
 
 	@Override
