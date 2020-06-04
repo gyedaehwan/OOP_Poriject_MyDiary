@@ -12,10 +12,11 @@ import java.io.InputStreamReader;
 
 import service.user.User;
 import service.user.UserService;
+import service.user.db.UserDB;
 
 public class Login_File extends FileIO {
 	String userID;
-	UserService userService;
+	UserDB userDB;
 	String make_user;
 	User user;
 	// 파일의 내용이 담긴 버퍼를 제어할 객체
@@ -27,10 +28,11 @@ public class Login_File extends FileIO {
 
 	}
 
+	// UserService -> UserDB
 	public Login_File(String userID, UserService userService) {
 		super(userID);
 		this.userID = userID;
-		this.userService = userService;
+		this.userDB = userService;
 	}
 
 	public Login_File(UserService userService) {
@@ -39,7 +41,7 @@ public class Login_File extends FileIO {
 		super();
 
 		// userDB를 가진 객체
-		this.userService = userService;
+		this.userDB = userService;
 	}
 
 	// 입력한 id 와 login.txt 파일에있는 id들을 비교하여 같은 id가 있는지 비교
@@ -71,7 +73,7 @@ public class Login_File extends FileIO {
 					user.setUserTEL(split[2]);
 					user.setUserSEX(split[3]);
 					user.setUserAGE(Integer.parseInt(split[4]));
-					userService.update(user);
+					userDB.update(user);
 					return split[1];
 				}
 			}
@@ -127,7 +129,7 @@ public class Login_File extends FileIO {
 
 			// UserService 객체의 update 메서드 호출
 			// 입력받은 user를 userDB에 추가
-			userService.update(user);
+			userDB.update(user);
 
 		}
 

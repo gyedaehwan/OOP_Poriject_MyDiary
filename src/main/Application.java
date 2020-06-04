@@ -1,17 +1,16 @@
 // 구현 한것 
 // user : 로그인 파일 조회를 통한 로그인, 회원가입을 통한 로그인 파일 만들기, 
-// post : user id를 확인하여 게시글 파일 조회, 없으면 새로 생성, 있으면 게시글 출력, 게시글 작성
+// post : user id를 확인하여 게시글 파일 조회, 없으면 새로 생성, 있으면 게시글 출력, 게시글 작성 , 게시글 삭제하기
+//		  , 게시글 검색하기 (제목) 
 // 해야할것
 // user : 회원정보 수정하기
-// post : 게시글 수정하기 , 게시글 검색하기 (제목) , 게시글 삭제하기
+// post : 게시글 수정하기 
 
 // 구현 완료후 다듬어야 할부분
 // all  : 전체적인 CLI UI 컨트롤 디자인, 코드 간결화 
 //        (부모-자식 간의 상속 정리 및 객체화 정리 필요 & 변수 선언 정리 & 주석깔끔이)
 // user : 
-// post : 로그인 후 게시글 조회시 제목으로만 우선 목록 조회 -> 후에 전체게시글 조회 혹은 검색을 통한 게시글 내용 표출
-//   	  게시글 개수 최대 9개 (더 많을시 아이디 추가 생성 요구)
-//       실행마다 DB과 초기화되기 때문에 게시물 번호가 맞지않음 -> 수정필요
+// post : 게시글 개수 최대 9개 (더 많을시 아이디 추가 생성 요구)
 
 package main;
 
@@ -53,36 +52,47 @@ public class Application {
 			Login.choice();
 			input = br_keyboard.readLine();
 
-			// 로그인
-			if (Integer.parseInt(input) == 1) {
-				Login.answer_ID();
-				input = br_keyboard.readLine();
-				// 동일한 아이디가 없을 시 로그인 실패
-				if ((pw = Login.check_ID(input, userService)) == null)
-					;
+			try {
 
-				// 동일한 아이디가 있을 시 PW요구
-				else {
-					Login.answer_PW();
+				// 로그인
+				if (Integer.parseInt(input) == 1) {
+					Login.answer_ID();
 					input = br_keyboard.readLine();
-					// pw 동일 시 로그인 성공
-					if (pw.equals(input)) {
-						login = true;
-						break;
-					} else
-						Login.wrong_PW();
+					// 동일한 아이디가 없을 시 로그인 실패
+					if ((pw = Login.check_ID(input, userService)) == null)
+						;
+
+					// 동일한 아이디가 있을 시 PW요구
+					else {
+						Login.answer_PW();
+						input = br_keyboard.readLine();
+						// pw 동일 시 로그인 성공
+						if (pw.equals(input)) {
+							login = true;
+							break;
+						} else
+							Login.wrong_PW();
+
+					}
 
 				}
 
-			}
+				// 회원가입
+				else if (Integer.parseInt(input) == 2) {
+					Login.sign_up(userService);
+				}
+				// 종료
+				else if (Integer.parseInt(input) == 3)
+					break;
+				else
+					Login.choice_ERROR();
 
-			// 회원가입
-			else if (Integer.parseInt(input) == 2) {
-				Login.sign_up(userService);
+			} catch (NumberFormatException e) {
+				System.out.println("1~3의 숫자만 입력하세요!");
+				System.out.println();
+				System.out.println();
+				continue;
 			}
-			// 종료
-			else if (Integer.parseInt(input) == 3)
-				break;
 
 		}
 
@@ -92,29 +102,43 @@ public class Application {
 			Play.menu();
 			input = br_keyboard.readLine();
 
-			// 게시글 쓰기
-			if (Integer.parseInt(input) == 1) {
-				Play.title_in();
-				input = br_keyboard.readLine();
-				Play.make_post(input, userService, postService);
-			}
-			// 게시글 수정
-			else if (Integer.parseInt(input) == 2) {
+			try {
+				// 게시글 쓰기
+				if (Integer.parseInt(input) == 1) {
+					Play.title_in();
+					input = br_keyboard.readLine();
+					Play.make_post(input, userService, postService);
+				}
+				// 게시글 수정
+				else if (Integer.parseInt(input) == 2) {
 
-			}
-			// 게시글 삭제
-			else if (Integer.parseInt(input) == 3) {
+				}
+				// 게시글 삭제
+				else if (Integer.parseInt(input) == 3) {
+					Play.num_in();
+					input = br_keyboard.readLine();
+					Play.delete_post(Integer.parseInt(input), userService, postService);
+				}
+				// 게시글 검색
+				else if (Integer.parseInt(input) == 4) {
+					Play.search_post_in();
+					input = br_keyboard.readLine();
+					Play.search_post(input, userService, postService);
 
-			}
-			// 게시글 검색
-			else if (Integer.parseInt(input) == 4) {
+				}
+				// 회원정보 수정
+				else if (Integer.parseInt(input) == 5) {
 
+				} else if (Integer.parseInt(input) == 6) {
+					System.out.println("로그아웃 및 종료합니다.");
+					break;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("1~6의 숫자만 입력하세요!");
+				System.out.println();
+				System.out.println();
+				continue;
 			}
-			// 회원정보 수정
-			else if (Integer.parseInt(input) == 5) {
-
-			}
-
 		}
 	}
 

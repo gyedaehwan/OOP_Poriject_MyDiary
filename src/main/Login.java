@@ -29,6 +29,10 @@ abstract class Login {
 
 	static void choice_ERROR() {
 		System.out.println("1 ,2, 3 중에서 고르세요!");
+		System.out.println("재시작..");
+		System.out.println();
+		System.out.println();
+
 	}
 
 	static void answer_ID() {

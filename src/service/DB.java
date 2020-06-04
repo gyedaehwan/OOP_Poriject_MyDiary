@@ -1,10 +1,10 @@
 package service;
 
-public abstract class DB {
+public interface DB {
+	void update(Object obj);
 
-	protected abstract void update(Object obj);
+	void delete(Object obj);
 
-	public abstract void delete(Object obj);
+	Object get(Object obj);
 
-	protected abstract Object get(Object obj);
 }

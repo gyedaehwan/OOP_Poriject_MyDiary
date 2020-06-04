@@ -17,7 +17,7 @@ public class PostService extends PostDB {
 	@Override
 	public void update(Object obj) {
 		this.post = (Post) obj;
-		postDB.put(this.post.getNum(), post);
+		postDB.put(post.getNum(), post);
 	}
 
 	// post 정보 삭제
@@ -31,10 +31,12 @@ public class PostService extends PostDB {
 
 	// post 게시글 번호 리턴
 	// 사용할 부분 : 게시글 수정 , 삭제
+	@Override
 	public int getNum() {
 		return post.getNum();
 	}
 
+	@Override
 	public void setNum(int num) {
 		post.setNum(num);
 	}

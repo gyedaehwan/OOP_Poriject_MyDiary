@@ -9,7 +9,7 @@ import java.util.Map;
 import service.DB;
 import service.user.User;
 
-public abstract class UserDB extends DB {
+public abstract class UserDB implements DB {
 	protected Map<String, User> userDB;
 	protected User user;
 
