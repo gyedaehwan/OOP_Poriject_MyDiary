@@ -21,6 +21,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import service.post.Post;
 import service.post.PostService;
@@ -30,6 +32,9 @@ public class Post_File extends FileIO {
 	PostDB postDB;
 	Post post;
 	File file_copy;
+	Date date;
+
+	SimpleDateFormat format1 = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
 	// 파일의 내용이 담긴 버퍼를 제어할 객체
 	BufferedReader bf;
@@ -41,11 +46,6 @@ public class Post_File extends FileIO {
 	private String inFile; // 파일 내의 데이터를 받아오는 String 참조변수
 
 	private int post_count = 0; // 게시글 개수
-
-	// test
-	public int getPostCount() {
-		return post_count;
-	}
 
 	public Post_File(String writer, PostService postService) {
 		super(writer);
@@ -104,20 +104,28 @@ public class Post_File extends FileIO {
 
 	public void print_list() throws IOException {
 		list_to_postDB();
-		System.out.println("== " + writer + "의 게시글 ==");
-		if (postDB.getNum() == 0)
-			System.out.println("==== 등록된 게시글이 없습니다. ====");
-		else {
+		System.out.println("		〓〓〓〓〓〓 " + writer + " 의 게시글 〓〓〓〓〓〓");
+		if (postDB.getNum() == 0) {
+			System.out.println("		             ※ 등록된 게시글이 없습니다 ※ ");
+
+		} else {
 			for (int i = 1; i <= postDB.getNum(); i++) {
 				post = postDB.get(i);
-				System.out.println("# " + post.getNum() + "번 제목 : " + post.getPostName());
+				System.out.println("		# " + post.getNum() + "번 제목 : " + post.getPostName());
 			}
 		}
-
+		System.out.println("		〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
+		System.out.println(".......................⊙⊙ ⊙ ⊙ ⊙ ⊙ ⊙ ⊙....................... ");
+		System.out.println();
 	}
 
 	public void write(String title) throws IOException {
 		br = new BufferedReader(new InputStreamReader(System.in));
+
+		// 작성 시간 받아오는 객체
+		date = new Date();
+		String time = format1.format(date);
+
 		if (checkFile()) {
 
 			bw = new BufferedWriter(new FileWriter(file, true));
@@ -138,17 +146,18 @@ public class Post_File extends FileIO {
 				bw.newLine();
 
 				// 첫 줄 제목 추가
-				// 최근 수정된 날짜 다음줄에 추가해야함
 
 				bw.write(":제목: ");
 				bw.write(title);
 				bw.newLine();
 				bw.write("@");
 				// 날짜 추가
-				// bw.write(date);
+				bw.write(time);
 				bw.newLine();
 
 				while (true) {
+					System.out.print("	   >");
+
 					input = br.readLine();
 
 					// enter만 입력시 반복문 탈출, 즉 입력 종료
@@ -168,12 +177,14 @@ public class Post_File extends FileIO {
 				post = new Post();
 				post.setNum(post_count);
 				post.setPostName(title);
-				// 날짜도 넣어야함
-				// post.setDate(date);
+				post.setDate(time);
 				postDB.update(post);
 				bw.close();
 			}
 		}
+
+		System.out.println(".......................⊙⊙ ⊙ ⊙ ⊙ ⊙ ⊙ ⊙....................... ");
+		System.out.println();
 	}
 
 	public void delete(int num) throws IOException {
@@ -227,6 +238,10 @@ public class Post_File extends FileIO {
 					bw.write("======== " + (post_count - 1) + " ========");
 					bw.newLine();
 
+					// 가장 마지막 파일을 postDB에서 우선 지워줌
+					if (postDB.get(post_count) == null)
+						postDB.delete(post_count);
+
 					// postDB에서 다음 게시글들의 번호도 1씩 줄여줌
 					post = new Post();
 					post.setNum(post_count - 1);
@@ -257,6 +272,8 @@ public class Post_File extends FileIO {
 		}
 		bw.close();
 
+		System.out.println(".......................⊙⊙ ⊙ ⊙ ⊙ ⊙ ⊙ ⊙....................... ");
+		System.out.println();
 	}
 
 	public void search(String title) throws IOException {
@@ -277,12 +294,79 @@ public class Post_File extends FileIO {
 					else if (inFile.charAt(0) == '=')
 						post_count++;
 
-					if (post_count == post.getNum())
-						System.out.println(inFile);
+					if (post_count == post.getNum()) {
+						System.out.print("		");
+						// 출력 시 구분 기호 지우기
+						if (inFile.charAt(0) == '=') {
+							inFile = inFile.replace("=", "");
+							System.out.println("〓〓〓〓〓〓〓〓 " + post_count + " 〓〓〓〓〓〓〓〓");
+						} else {
+							if (inFile.charAt(0) == '@') {
+								inFile = inFile.replace("@", "");
+								System.out.println();
+							} else if (inFile.charAt(0) == ':')
+								inFile = inFile.replace(":", "");
+							else if (inFile.charAt(0) == '#')
+								inFile = inFile.replace("#", ">");
+
+							System.out.println(inFile);
+						}
+					}
 
 				}
+			} else if (i == postDB.getNum()) {
+				System.out.println("		※ 같은 제목의 게시글이 없습니다 ※");
+				System.out.println();
 			}
 		}
+		System.out.println("		〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
+
+		System.out.println(".......................⊙⊙ ⊙ ⊙ ⊙ ⊙ ⊙ ⊙....................... ");
+		System.out.println();
+	}
+
+	public void showAll() throws IOException {
+		bf = new BufferedReader(new FileReader(file));
+		inFile = bf.readLine();
+		while (true) {
+
+			if (inFile == null)
+				break;
+
+			if (inFile.charAt(0) == '=') {
+				post_count++;
+				System.out.println();
+				System.out.println("		▣");
+				System.out.println("		" + post_count + "번 게시글");
+			}
+			// 제목
+			else if (inFile.charAt(0) == ':') {
+				inFile = inFile.replace(":제목:", "");
+				System.out.print("		<");
+				System.out.print(inFile);
+				System.out.println(" >");
+			}
+
+			// 날짜
+			else if (inFile.charAt(0) == '@') {
+				inFile = inFile.replace("@", "");
+				System.out.print("		");
+				System.out.println(inFile);
+				System.out.println();
+			}
+
+			// 내용
+			else {
+				inFile = inFile.replace("#", ">");
+				System.out.print("		");
+				System.out.println(inFile);
+			}
+
+			inFile = bf.readLine();
+		}
+
+		System.out.println("		〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓〓");
+
 	}
 
 }

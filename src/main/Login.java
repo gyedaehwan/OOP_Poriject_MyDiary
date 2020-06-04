@@ -10,29 +10,33 @@ abstract class Login {
 	static int version = 1;
 
 	static void start() {
-		System.out.println("나만의 일기장 시작");
-		System.out.println("환영합니다!!");
-		System.out.println("******************");
-	}
-
-	static void check() {
-		System.out.println("** 로그인이 필요합니다. **");
-		System.out.println();
+		System.out.println("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒");
+		System.out.println("▒▒                       ▒▒▒ ▒▒▒                     ▒▒");
+		System.out.println("▒▒ 나만의 일기장                                     ▒     소프트웨어학부 나반               ▒▒");
+		System.out.println("▒▒ My Diary                 ▒     20170260           ▒▒");
+		System.out.println("▒▒                          ▒     계대환                                  ▒▒");
+		System.out.println("▒▒ 로그인이 필요합니다 .           ▒                        ▒▒");
+		System.out.println("▒▒                          ▒                        ▒▒");
+		System.out.println("▒▒ (1) 로그인                                      ▒                        ▒▒");
+		System.out.println("▒▒ (2) 회원가입                                   ▒                        ▒▒");
+		System.out.println("▒▒ (3) 종료                                         ▒                        ▒▒");
+		System.out.println("▒▒                          ▒                        ▒▒");
+		System.out.println("▒▒                          ▒                        ▒▒");
+		System.out.println("▒▒                          ▒                        ▒▒");
+		System.out.println("▒▒                       ▒▒▒ ▒▒▒                     ▒▒");
+		System.out.println("  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒     ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ");
+		System.out.println("");
 	}
 
 	static void choice() {
-		System.out.println("(1) 로그인");
-		System.out.println("(2) 회원가입");
-		System.out.println("(3) 종료");
-		System.out.println(":: ");
+		System.out.print(":: ");
 	}
 
 	static void choice_ERROR() {
-		System.out.println("1 ,2, 3 중에서 고르세요!");
-		System.out.println("재시작..");
-		System.out.println();
-		System.out.println();
 
+		System.out.println("		       ※ 1 ,2, 3 중에서 고르세요 ※");
+		System.out.println("			재시작..");
+		print_restart();
 	}
 
 	static void answer_ID() {
@@ -49,12 +53,21 @@ abstract class Login {
 	}
 
 	static void wrong_PW() {
-		System.out.println("잘못된 비밀번호 입니다. ");
+		System.out.println("		      ※ 잘못된 비밀번호 입니다 ※ ");
+		print_restart();
 	}
 
 	static void sign_up(UserService userService) throws IOException {
 		Login_File login = new Login_File(userService);
-		login.sign_up();
-		System.out.println("회원 가입 성공!");
+		if (login.sign_up())
+			System.out.println("회원 가입 성공!");
+		else
+			print_restart();
 	}
+
+	static void print_restart() {
+		System.out.println(".......................⊙ RESTART ⊙....................... ");
+		System.out.println();
+	};
+
 }

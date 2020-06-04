@@ -1,22 +1,20 @@
 package service.post;
 
-import java.util.Date;
-
 public class Post {
 	// post 力格
 	private String postName;
 	// 累己老矫
-	private Date date;
+	private String date;
 	// post 锅龋
 	private int num;
 
 	// GETTER & SETTER
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

@@ -56,7 +56,7 @@ public class Login_File extends FileIO {
 
 				// 한 줄을 읽되 비어있으면 탈출
 				if (line == null) {
-					System.out.println("등록된 ID가 없습니다.");
+					System.out.println("		       ※ 등록된 ID가 없습니다 ※");
 					break;
 				}
 
@@ -83,23 +83,35 @@ public class Login_File extends FileIO {
 		// 존재 하지 않을 시 , 로그인 실패
 		// 만약 존재하지 않을시 (최초 실행시) 에는 login.txt 파일 자동생성, 회원가입으로 정보입력 필요
 		else {
-			System.out.println("등록된 ID가 없습니다.");
+			System.out.println("		       ※ 등록된 ID가 없습니다 ※");
 		}
 		return null;
 	}
 
-	public void sign_up() throws IOException {
+	public boolean sign_up() throws IOException {
 		br = new BufferedReader(new InputStreamReader(System.in));
 
 		// userDB에 넣어줄 user객체 생성
 		user = new User();
 		// login.txt 에 입력 된 정보를 입력해주는 객체
 		BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-
+		bf = new BufferedReader(new FileReader(file));
 		// 파일의 존재여부와 접근가능여부 확인
 		if (file.isFile() && file.canWrite()) {
 			System.out.print("ID : ");
 			make_user = br.readLine();
+			// ID중복 생성 방지
+			String check;
+			while (true) {
+				check = bf.readLine();
+				if (check == null)
+					break;
+				else if (check.split(" ")[0].equals(make_user)) {
+					System.out.println("		       ※ 중복된 ID 입니다 ※");
+					return false;
+				}
+
+			}
 			bw.write(make_user);
 			bw.write(" ");
 			user.setUserID(make_user);
@@ -137,6 +149,7 @@ public class Login_File extends FileIO {
 		bw.newLine();
 
 		bw.close();
+		return true;
 	}
 
 }

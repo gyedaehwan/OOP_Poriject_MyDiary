@@ -1,16 +1,3 @@
-// 구현 한것 
-// user : 로그인 파일 조회를 통한 로그인, 회원가입을 통한 로그인 파일 만들기, 
-// post : user id를 확인하여 게시글 파일 조회, 없으면 새로 생성, 있으면 게시글 출력, 게시글 작성 , 게시글 삭제하기
-//		  , 게시글 검색하기 (제목) 
-// 해야할것
-// user : 회원정보 수정하기
-// post : 게시글 수정하기 
-
-// 구현 완료후 다듬어야 할부분
-// all  : 전체적인 CLI UI 컨트롤 디자인, 코드 간결화 
-//        (부모-자식 간의 상속 정리 및 객체화 정리 필요 & 변수 선언 정리 & 주석깔끔이)
-// user : 
-// post : 게시글 개수 최대 9개 (더 많을시 아이디 추가 생성 요구)
 
 package main;
 
@@ -48,7 +35,6 @@ public class Application {
 		// 프로그램 연속적 실행
 		while (true) {
 			Login.start();
-			Login.check();
 			Login.choice();
 			input = br_keyboard.readLine();
 
@@ -60,7 +46,7 @@ public class Application {
 					input = br_keyboard.readLine();
 					// 동일한 아이디가 없을 시 로그인 실패
 					if ((pw = Login.check_ID(input, userService)) == null)
-						;
+						Login.print_restart();
 
 					// 동일한 아이디가 있을 시 PW요구
 					else {
@@ -88,9 +74,9 @@ public class Application {
 					Login.choice_ERROR();
 
 			} catch (NumberFormatException e) {
-				System.out.println("1~3의 숫자만 입력하세요!");
-				System.out.println();
-				System.out.println();
+				Login.print_restart();
+				System.out.println("		       ※ 1~3의 숫자만 입력하세요 ※");
+				Login.print_restart();
 				continue;
 			}
 
@@ -109,9 +95,9 @@ public class Application {
 					input = br_keyboard.readLine();
 					Play.make_post(input, userService, postService);
 				}
-				// 게시글 수정
+				// 게시글 조회
 				else if (Integer.parseInt(input) == 2) {
-
+					Play.print_all(userService, postService);
 				}
 				// 게시글 삭제
 				else if (Integer.parseInt(input) == 3) {
@@ -125,16 +111,14 @@ public class Application {
 					input = br_keyboard.readLine();
 					Play.search_post(input, userService, postService);
 
-				}
-				// 회원정보 수정
-				else if (Integer.parseInt(input) == 5) {
+				} else if (Integer.parseInt(input) == 5) {
+					System.out.println("		 ※ 로그아웃 및 종료합니다 ※");
+					System.out.println("              MADE BY GYE DAEHWAN_2020 ");
 
-				} else if (Integer.parseInt(input) == 6) {
-					System.out.println("로그아웃 및 종료합니다.");
 					break;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("1~6의 숫자만 입력하세요!");
+				System.out.println("		       ※ 1~5의 숫자만 입력하세요 ※");
 				System.out.println();
 				System.out.println();
 				continue;
