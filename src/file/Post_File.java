@@ -173,6 +173,7 @@ public class Post_File extends FileIO {
 					}
 
 				}
+				bw.write("% ");
 
 				post = new Post();
 				post.setNum(post_count);
@@ -183,7 +184,6 @@ public class Post_File extends FileIO {
 			}
 		}
 
-		System.out.println(".......................⊙⊙ ⊙ ⊙ ⊙ ⊙ ⊙ ⊙....................... ");
 		System.out.println();
 	}
 
@@ -303,17 +303,19 @@ public class Post_File extends FileIO {
 						} else {
 							if (inFile.charAt(0) == '@') {
 								inFile = inFile.replace("@", "");
-								System.out.println();
 							} else if (inFile.charAt(0) == ':')
 								inFile = inFile.replace(":", "");
 							else if (inFile.charAt(0) == '#')
 								inFile = inFile.replace("#", ">");
+							else if (inFile.charAt(0) == '%')
+								inFile = "";
 
 							System.out.println(inFile);
 						}
 					}
 
 				}
+				break;
 			} else if (i == postDB.getNum()) {
 				System.out.println("		※ 같은 제목의 게시글이 없습니다 ※");
 				System.out.println();
@@ -356,11 +358,15 @@ public class Post_File extends FileIO {
 			}
 
 			// 내용
-			else {
+			else if (inFile.charAt(0) == '#') {
 				inFile = inFile.replace("#", ">");
 				System.out.print("		");
 				System.out.println(inFile);
 			}
+
+			// 기분 (출력하지 않음)
+			else
+				inFile = "";
 
 			inFile = bf.readLine();
 		}

@@ -19,7 +19,8 @@ abstract class Login {
 		System.out.println("▒▒                          ▒                        ▒▒");
 		System.out.println("▒▒ (1) 로그인                                      ▒                        ▒▒");
 		System.out.println("▒▒ (2) 회원가입                                   ▒                        ▒▒");
-		System.out.println("▒▒ (3) 종료                                         ▒                        ▒▒");
+		System.out.println("▒▒ (3) 회원찾기                                   ▒                        ▒▒");
+		System.out.println("▒▒ (4) 종료                                         ▒                        ▒▒");
 		System.out.println("▒▒                          ▒                        ▒▒");
 		System.out.println("▒▒                          ▒                        ▒▒");
 		System.out.println("▒▒                          ▒                        ▒▒");
@@ -49,7 +50,7 @@ abstract class Login {
 
 	static String check_ID(String userID, UserService userService) throws IOException {
 		Login_File login = new Login_File(userID, userService);
-		return login.check_ID();
+		return login.check_ID(false);
 	}
 
 	static void wrong_PW() {
@@ -63,6 +64,21 @@ abstract class Login {
 			System.out.println("회원 가입 성공!");
 		else
 			print_restart();
+	}
+
+	static void find_user() {
+		System.out.println("		회원 찾기 입니다.");
+		System.out.println("		ID?    PW? ");
+	}
+
+	static void find_id(UserService userService, String tel, String sex, String age) throws IOException {
+		Login_File login = new Login_File(userService);
+		login.find_id(tel, sex, age);
+	}
+
+	static void find_pw(UserService userService, String id, String tel, String sex, String age) throws IOException {
+		Login_File login = new Login_File(userService);
+		login.find_pw(id, tel, sex, age);
 	}
 
 	static void print_restart() {

@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 
+import feeling.Feeling;
 import file.Post_File;
 import service.post.PostService;
 import service.user.UserService;
@@ -17,7 +18,8 @@ abstract class Play {
 		System.out.println("▒▒                          ▒     (2) 게시글 조회                  ▒▒");
 		System.out.println("▒▒                          ▒     (3) 게시글 삭제                  ▒▒");
 		System.out.println("▒▒                          ▒     (4) 게시글 검색                  ▒▒");
-		System.out.println("▒▒                          ▒     (5) 종료                            ▒▒");
+		System.out.println("▒▒                          ▒     (5) 기분 수치 통계              ▒▒");
+		System.out.println("▒▒                          ▒     (6) 종료                            ▒▒");
 		System.out.println("▒▒                          ▒                        ▒▒");
 		System.out.println("▒▒                          ▒                        ▒▒");
 		System.out.println("▒▒                          ▒                        ▒▒");
@@ -28,7 +30,7 @@ abstract class Play {
 	}
 
 	static void menu_ERROR() {
-		System.out.println("		       ※ 1 ~ 5 중에서 고르세요 ※");
+		System.out.println("		       ※ 1 ~ 6 중에서 고르세요 ※");
 		System.out.println();
 		System.out.println();
 
@@ -53,6 +55,28 @@ abstract class Play {
 		System.out.println("		〓〓〓〓〓〓 게시글 작성 〓〓〓〓〓〓");
 		System.out.println("		      (개행 두번 입력시 작성종료 )");
 		postFile.write(title);
+	}
+
+	static void input_feeling() {
+		// 기분 입력받기
+		System.out.println("		기분은 어떠셨나요 ?");
+		System.out.println("		BAD ~ GOOD");
+		System.out.println("		 0     100");
+		System.out.print("		수치 입력 : ");
+	}
+
+	static void add_feeling(int feeling, UserService userService, PostService postService) throws IOException {
+		Feeling feelingFile = new Feeling(userService.userID(), postService);
+		feelingFile.add(feeling);
+	}
+
+	static void analyzed_feeling(UserService userService, PostService postService) throws IOException {
+		Feeling feelingFile = new Feeling(userService.userID());
+		if (feelingFile.average() != 0) {
+			System.out.println("		    " + postService.getNum() + "개의 게시글 평균 기분 수치  ");
+			System.out.println("		       ** " + feelingFile.average() + "% **");
+			feelingFile.analyzed(feelingFile.average());
+		}
 	}
 
 	static void num_in() {

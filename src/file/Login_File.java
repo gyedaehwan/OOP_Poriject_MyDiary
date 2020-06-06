@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import service.user.User;
 import service.user.UserService;
@@ -19,10 +20,23 @@ public class Login_File extends FileIO {
 	UserDB userDB;
 	String make_user;
 	User user;
+
+	boolean output;
 	// 파일의 내용이 담긴 버퍼를 제어할 객체
 	BufferedReader bf;
 	// 키보드로 부터 버퍼를 제어할 객체
 	BufferedReader br;
+
+	// ID 확인 용
+	ArrayList<String> Array_ID = new ArrayList<>();
+	// PW 확인 용
+	ArrayList<String> Array_PW = new ArrayList<>();
+	// TEL 확인용
+	ArrayList<String> Array_TEL = new ArrayList<>();
+	// SEX 확인용
+	ArrayList<String> Array_SEX = new ArrayList<>();
+	// AGE 확인용
+	ArrayList<String> Array_AGE = new ArrayList<>();
 
 	public Login_File() {
 
@@ -46,7 +60,7 @@ public class Login_File extends FileIO {
 
 	// 입력한 id 와 login.txt 파일에있는 id들을 비교하여 같은 id가 있는지 비교
 	// 있으면 해당 id의 pw 리턴
-	public String check_ID() throws IOException {
+	public String check_ID(boolean find) throws IOException {
 
 		// 파일이 존재하면
 		if (checkFile()) {
@@ -56,26 +70,37 @@ public class Login_File extends FileIO {
 
 				// 한 줄을 읽되 비어있으면 탈출
 				if (line == null) {
-					System.out.println("		       ※ 등록된 ID가 없습니다 ※");
-					break;
+					if (find)
+						break;
+					else {
+						break;
+					}
 				}
 
 				// ' ' 로 데이터 구분
-				// [0] : ID , [1] : PW , [2] : TEL , [3] : SEX , [4] : AGE
 				String[] split = line.split(" ");
 
-				// 해당 줄이 비어있지 않으면 첫번째 데이터 (id) 가 입력된 userID와 같은 지 비교
-				// 같으면 해당 비밀번호 리턴
-				if (split[0].equals(userID)) {
+				Array_ID.add(split[0]);
+				Array_PW.add(split[1]);
+				Array_TEL.add(split[2]);
+				Array_SEX.add(split[3]);
+				Array_AGE.add(split[4]);
+
+			}
+			int i = 0;
+			for (String str : Array_ID) {
+				if (str.equals(userID)) {
 					user = new User();
-					user.setUserID(split[0]);
-					user.setUserPW(split[1]);
-					user.setUserTEL(split[2]);
-					user.setUserSEX(split[3]);
-					user.setUserAGE(Integer.parseInt(split[4]));
+					user.setUserID(str);
+					user.setUserPW(Array_PW.get(i));
+					user.setUserTEL(Array_TEL.get(i));
+					user.setUserSEX(Array_SEX.get(i));
+					user.setUserAGE(Integer.parseInt(Array_AGE.get(i)));
 					userDB.update(user);
-					return split[1];
+
+					return user.getUserPW();
 				}
+				i++;
 			}
 
 		}
@@ -86,6 +111,84 @@ public class Login_File extends FileIO {
 			System.out.println("		       ※ 등록된 ID가 없습니다 ※");
 		}
 		return null;
+	}
+
+	public void find_id(String tel, String sex, String age) throws IOException {
+		check_ID(true);
+		int tel_sign = 0, sex_sign = 0, age_sign = 0;
+
+		for (int i = 0; i < Array_TEL.size(); i++) {
+			if (Array_TEL.get(i).equals(tel)) {
+				if (Array_SEX.get(i).equals(sex)) {
+					if (Array_AGE.get(i).equals(age)) {
+						System.out.println("		ID : " + Array_ID.get(i));
+						System.out.println();
+						break;
+					} else {
+						if (i == Array_ID.size() - 1) {
+							System.out.println("		일치하는 정보 없음");
+							System.out.println("		회원가입을 하세요.");
+
+						}
+					}
+				} else {
+					if (i == Array_ID.size() - 1) {
+						System.out.println("		일치하는 SEX 없음");
+						System.out.println("		회원가입을 하세요.");
+
+					}
+				}
+			} else {
+				if (i == Array_ID.size() - 1) {
+					System.out.println("		일치하는 TEL 없음");
+					System.out.println("		회원가입을 하세요.");
+
+				}
+			}
+		}
+	}
+
+	public void find_pw(String id, String tel, String sex, String age) throws IOException {
+		check_ID(true);
+		int id_sign = 0, tel_sign = 0, sex_sign = 0, age_sign = 0;
+		for (int i = 0; i < Array_ID.size(); i++) {
+
+			if (Array_ID.get(i).equals(id)) {
+				if (Array_TEL.get(i).equals(tel)) {
+					if (Array_SEX.get(i).equals(sex)) {
+						if (Array_AGE.get(i).equals(age)) {
+							System.out.println("		PW : " + Array_PW.get(i));
+							System.out.println();
+							break;
+						} else {
+							if (i == Array_ID.size() - 1) {
+								System.out.println("		일치하는 정보 없음");
+								System.out.println("		회원가입을 하세요.");
+
+							}
+						}
+					} else {
+						if (i == Array_ID.size() - 1) {
+							System.out.println("		일치하는 SEX 없음");
+							System.out.println("		회원가입을 하세요.");
+
+						}
+					}
+				} else {
+					if (i == Array_ID.size() - 1) {
+						System.out.println("		일치하는 TEL 없음");
+						System.out.println("		회원가입을 하세요.");
+
+					}
+				}
+			} else {
+				if (i == Array_ID.size() - 1) {
+					System.out.println("		일치하는 ID 없음");
+					System.out.println("		회원가입을 하세요.");
+
+				}
+			}
+		}
 	}
 
 	public boolean sign_up() throws IOException {
@@ -116,40 +219,83 @@ public class Login_File extends FileIO {
 			bw.write(" ");
 			user.setUserID(make_user);
 
-			System.out.println("PW : ");
-			make_user = br.readLine();
-			bw.write(make_user);
-			bw.write(" ");
-			user.setUserPW(make_user);
+			// 최소 4글자 이상
+			while (true) {
+				System.out.println("PW : ");
+				make_user = br.readLine();
+				if (make_user.length() < 4) {
+					System.out.println("		4자 이상 입력하세요.");
+				} else {
+					bw.write(make_user);
+					bw.write(" ");
+					user.setUserPW(make_user);
+					break;
+				}
+			}
 
-			System.out.println("TEL : ");
-			make_user = br.readLine();
-			bw.write(make_user);
-			bw.write(" ");
-			user.setUserTEL(make_user);
+			while (true) {
+				System.out.println("TEL : ");
+				make_user = br.readLine();
+				if (make_user.contains("-")) {
+					System.out.println("		- 없이 입력하세요 ");
+					System.out.println("		ex) 01012345678");
+				} else {
+					bw.write(make_user);
+					bw.write(" ");
+					user.setUserTEL(make_user);
+					break;
+				}
+			}
 
-			System.out.println("SEX : ");
-			make_user = br.readLine();
-			bw.write(make_user);
-			bw.write(" ");
-			user.setUserSEX(make_user);
+			while (true) {
+				System.out.println("		( only male or female )");
+				System.out.println("SEX : ");
+				make_user = br.readLine();
+				if (make_user.equals("male") || make_user.equals("female")) {
+					bw.write(make_user);
+					bw.write(" ");
+					user.setUserSEX(make_user);
+					break;
+				} else {
+					System.out.println("		male 혹은 female 중에 만 입력");
+				}
+			}
 
-			System.out.println("AGE : ");
-			make_user = br.readLine();
-			bw.write(make_user);
-			user.setUserAGE(Integer.parseInt(make_user));
+			while (true) {
+				System.out.println("AGE : ");
+				make_user = br.readLine();
 
-			// UserService 객체의 update 메서드 호출
-			// 입력받은 user를 userDB에 추가
-			userDB.update(user);
+				char tmp;
+				for (int i = 0; i < make_user.length(); i++) {
+					tmp = make_user.charAt(i);
 
-		}
+					if (Character.isDigit(tmp) == false) {
+						output = false;
+					} else
+						output = true;
+				}
 
-		// 개행문자쓰기
-		bw.newLine();
+				if (output) {
+					bw.write(make_user);
+					user.setUserAGE(Integer.parseInt(make_user));
 
-		bw.close();
-		return true;
+					// UserService 객체의 update 메서드 호출
+					// 입력받은 user를 userDB에 추가
+					userDB.update(user);
+					break;
+				} else {
+					System.out.println("		숫자만 입력하세요.");
+				}
+
+			}
+
+			// 개행문자쓰기
+			bw.newLine();
+
+			bw.close();
+			return true;
+		} else
+			return false;
+
 	}
-
 }

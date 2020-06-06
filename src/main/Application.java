@@ -1,4 +1,5 @@
-
+// id 및 패스워드 찾기 
+// 
 package main;
 
 import java.io.BufferedReader;
@@ -22,12 +23,20 @@ public class Application {
 		BufferedReader br_keyboard = new BufferedReader(new InputStreamReader(System.in));
 
 		// Service객체로부터 생성된 UserService와 PostService 객체 이용
+		// 레퍼런스 DB로 바꾸기 (부모 사용)
 		UserService userService = service.getUserService();
 		PostService postService = service.getPostService();
 
 		// String 객체 목록
 		String input; // 프로그램 실행간에 입력을 중계해줄 String 객체
+		int feeling; // 기분 수치화 표현 변수
+		boolean output = false; // 정수 입력 확인을 위한 변수
+
 		String pw; // 비밀번호 확인을 위한 String 객체
+		String id;
+		String tel;
+		String sex;
+		String age;
 
 		// 변수 목록
 		boolean login = false; // 로그인 확인 여부를 위한 변수, 초기값 f (t: 로그인 성공, f: 로그인 실패)
@@ -67,8 +76,45 @@ public class Application {
 				else if (Integer.parseInt(input) == 2) {
 					Login.sign_up(userService);
 				}
+				// 회원찾기
+				else if (Integer.parseInt(input) == 3) {
+					Login.find_user();
+					input = br_keyboard.readLine();
+
+					if (input.equals("ID")) {
+						System.out.print("TEL : ");
+						tel = br_keyboard.readLine();
+
+						System.out.print("SEX : ");
+						sex = br_keyboard.readLine();
+
+						System.out.println("AGE : ");
+						age = br_keyboard.readLine();
+
+						Login.find_id(userService, tel, sex, age);
+					} else if (input.equals("PW")) {
+						System.out.println("ID : ");
+						id = br_keyboard.readLine();
+
+						System.out.print("TEL : ");
+						tel = br_keyboard.readLine();
+
+						System.out.print("SEX : ");
+						sex = br_keyboard.readLine();
+
+						System.out.println("AGE : ");
+						age = br_keyboard.readLine();
+
+						Login.find_pw(userService, id, tel, sex, age);
+					} else {
+						System.out.println("		※ ID 와 PW 중에 입력하세요 ※");
+						System.out.println("		                재실행 합니다");
+
+					}
+
+				}
 				// 종료
-				else if (Integer.parseInt(input) == 3)
+				else if (Integer.parseInt(input) == 4)
 					break;
 				else
 					Login.choice_ERROR();
@@ -93,7 +139,33 @@ public class Application {
 				if (Integer.parseInt(input) == 1) {
 					Play.title_in();
 					input = br_keyboard.readLine();
+
 					Play.make_post(input, userService, postService);
+
+					while (true) {
+						// 게시글 작성 후 기분 입력받기
+						Play.input_feeling();
+						input = br_keyboard.readLine();
+
+						// 정수 입력 확인
+
+						for (int i = 0; i < input.length(); i++) {
+							int tmp = input.charAt(i);
+
+							if (Character.isDigit(tmp) == false) {
+								System.out.println("		기분은 0~100의 정수로 입력해주세요");
+								output = false;
+							} else
+								output = true;
+						}
+						if (output) {
+							feeling = Integer.parseInt(input);
+							// 여기서부터 ~ feeling 메서드 추가 해야함
+							Play.add_feeling(feeling, userService, postService);
+
+							break;
+						}
+					}
 				}
 				// 게시글 조회
 				else if (Integer.parseInt(input) == 2) {
@@ -111,7 +183,11 @@ public class Application {
 					input = br_keyboard.readLine();
 					Play.search_post(input, userService, postService);
 
-				} else if (Integer.parseInt(input) == 5) {
+				}
+				// 기분 통계 출력
+				else if (Integer.parseInt(input) == 5) {
+					Play.analyzed_feeling(userService, postService);
+				} else if (Integer.parseInt(input) == 6) {
 					System.out.println("		 ※ 로그아웃 및 종료합니다 ※");
 					System.out.println("              MADE BY GYE DAEHWAN_2020 ");
 

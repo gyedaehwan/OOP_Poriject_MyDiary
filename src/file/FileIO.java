@@ -10,7 +10,7 @@ import java.io.IOException;
 public abstract class FileIO {
 
 	// 파일을 생성하고 불러올 객체 생성
-	File file;
+	protected File file;
 
 	// 파일이름
 	String compare;
@@ -23,7 +23,7 @@ public abstract class FileIO {
 
 	// post 기능 시 사용
 	// String인자로 생성자 생성시 해당 이름의 파일을 객체에 불러옴
-	FileIO(String compare) {
+	protected FileIO(String compare) {
 		this.compare = compare;
 		file = new File("./" + compare + ".txt");
 	}
